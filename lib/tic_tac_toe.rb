@@ -25,8 +25,7 @@ class TicTacToe
     end 
 
     def input_to_index(player_choice)
-        player_choice = player_choice.to_i - 1
-        player_choice       
+        player_choice.to_i - 1      
     end
 
     def move(index, token = "X")
@@ -111,7 +110,7 @@ class TicTacToe
     end
 
     def play
-        while !self.won?
+        while !self.won? && !self.full?
             self.turn
         end
 
@@ -123,3 +122,6 @@ class TicTacToe
     end
 
 end
+
+new = TicTacToe.new
+new.play
