@@ -1,9 +1,8 @@
 require 'pry'
 class TicTacToe
-    attr_accessor :board
 
-    def initialize(board = nil)
-        @board = board || Array.new(9, " ")
+    def initialize
+        @board = Array.new(9, " ")
     end
 
     WIN_COMBINATIONS = [
@@ -38,7 +37,7 @@ class TicTacToe
     end
 
     def valid_move?(position)
-        @board.all? {(0..@board.length-1).include?(position) && @board[position].include?(" ")}
+        @board.all? {(0..@board.length-1).include?(position) && !position_taken?(position)}
     end
 
     def turn_count
@@ -46,25 +45,19 @@ class TicTacToe
     end
 
     def current_player
-        turn_count % 2 == 0 ? "X" : "O"
+        turn_count.even? ? "X" : "O"
     end
 
     def turn
-        puts "Please choose your next position.(1-9)!"
-        position = gets.chomp
-        index_pos = nil
-        while true
-            index_pos = self.input_to_index(position)
-            if self.valid_move?(index_pos)
-                break
-            else
-                position = gets.chomp
-            end
+        puts "Please choose your next position between 1-9:"
+        user_input = gets.strip
+        index_pos = input_to_index(user_input)
+        if valid_move?(index_pos)
+            move(index_pos, current_player)
+            display_board
+        else
+            self.turn
         end
-
-        player = self.current_player
-        self.move(index_pos, player)
-        self.display_board
     end
 
     def won?
@@ -111,16 +104,15 @@ class TicTacToe
     end
 
     def play
-        while !self.won? && !self.full?
+        while !over?
             self.turn
         end
 
         if self.won?
-            puts "Congratulations #{self.winner}"
+            puts "Congratulations #{self.winner}!"
         elsif self.draw?
-            puts "The game ended in a draw. Better luck next time!"
+            puts "Cat's Game!"
         end
     end
-
 end
 
