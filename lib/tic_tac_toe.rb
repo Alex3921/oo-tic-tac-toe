@@ -1,7 +1,7 @@
 require 'pry'
 class TicTacToe
 
-    def initialize
+    def initialize(*args)
         @board = Array.new(9, " ")
     end
 
@@ -50,7 +50,7 @@ class TicTacToe
 
     def turn
         puts "Please choose your next position between 1-9:"
-        user_input = gets.strip
+        user_input = gets.chomp
         index_pos = input_to_index(user_input)
         if valid_move?(index_pos)
             move(index_pos, current_player)
@@ -115,4 +115,3 @@ class TicTacToe
         end
     end
 end
-
